@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comparatif des sujets · Hackathon</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#162c28;background:#f2f6f3;line-height:1.55;accent-color:#19634f}
+*{box-sizing:border-box}
+body{margin:0}
+main{max-width:1160px;margin:auto;padding:clamp(18px,5vw,64px)}
+header{background:#14352e;color:#f5faf7;padding:clamp(22px,5vw,54px);border-radius:24px}
+h1{font-size:clamp(2rem,6vw,4rem);line-height:1.04;margin:0 0 14px;letter-spacing:-.045em}
+header p{color:#d7eae0;margin:0;max-width:65ch}
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:12px;margin:20px 0 32px}
+.picks a{display:block;padding:16px 19px;background:#e0f1e6;color:#103e31;border-radius:14px;text-decoration:none}
+.picks a:hover{text-decoration:underline}
+.picks strong,.picks span{display:block}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin:12px 0}
+select,input{font:inherit}
+select{padding:7px 12px;border:1px solid #9fb8ab;background:white;border-radius:8px;color:inherit}
+label{cursor:pointer}
+input{margin-right:5px}
+#count,footer{color:#496158}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media(max-width:880px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:570px){.grid{grid-template-columns:1fr}}
+article{background:white;border:1px solid #ccdcd3;border-radius:16px;padding:18px;display:flex;flex-direction:column;scroll-margin-top:12px}
+article[hidden]{display:none}
+.meta{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.875rem;color:#3d5d50}
+.id{font-weight:800;color:#19634f;font-variant-numeric:tabular-nums}
+h2,h3{line-height:1.2}
+h3{margin:12px 0 8px;font-size:1.22rem}
+article p{margin:0 0 10px}
+dl{margin:0 0 14px}
+dt{font-weight:700;font-size:.875rem;color:#32574a}
+dd{margin:0 0 8px}
+.mark{border-top:1px solid #e0e9e3;padding-top:10px;margin-top:auto;font-weight:650}
+footer{margin-top:24px;font-size:.875rem}
+:focus-visible{outline:3px solid #1b7358;outline-offset:4px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Quel sujet choisir ?</h1>
+<p>Les neuf briefs du hackathon en un coup d’œil. Compare le résultat attendu, le principal point à vérifier et le nombre d’équipes, puis coche tes favoris.</p>
+</header>
+<nav class="picks" aria-label="Suggestions de départ">
+<a href="#s01"><strong>01 · Démo produit</strong><span>Parler et voir la carte se mettre à jour.</span></a>
+<a href="#s08"><strong>08 · Défi ML compact</strong><span>Classer les images à envoyer sous contrainte de débit.</span></a>
+<a href="#s06"><strong>06 · Vision et suivi</strong><span>Mesurer les gains sur les petits objets et la continuité des pistes.</span></a>
+</nav>
+<section aria-labelledby="list-title">
+<h2 id="list-title">Comparer les sujets</h2>
+<div class="toolbar">
+<label for="category">Domaine</label>
+<select id="category">
+<option value="">Tous</option>
+<option value="web">Web et voix</option>
+<option value="hardware">Matériel</option>
+<option value="autonomy">Autonomie de drones</option>
+<option value="ml">ML embarqué</option>
+</select>
+<label><input type="checkbox" id="favorites">Ma shortlist uniquement</label>
+</div>
+<p id="count" role="status"></p>
+<div class="grid" id="subjects"></div>
+</section>
+<footer>Source des fiches et des nombres d’équipes : les briefs transmis. Les suggestions reflètent la faisabilité estimée en temps de hackathon. La shortlist est enregistrée dans ce navigateur quand le stockage local est disponible.</footer>
+</main>
+<script>
+const subjects = [
+  ['01','web','Voice-to-Map','Lysk','Non indiqué','Transformer des mises à jour vocales en positions ou destinations sur une carte partagée.','Carte en direct avec marqueurs, trajets et historique horodaté.','Résoudre les repères ambigus et distinguer position actuelle et destination. Prévoir un casque.'],
+  ['02','hardware','Keep It Level','Fire Point','2 équipes','Maintenir une antenne à l’horizontale sur un drone qui s’incline.','Concept mécanique et électronique, CAO, modèle de commande et courbes sur logs Cube Orange.','Vérifier l’accès aux logs. Le brief combine une charge minimale de 2 kg, une erreur maximale de ±2° et une emprise de 400 × 400 mm.'],
+  ['03','autonomy','Target acquisition and guidance','Alta Ares','6 équipes','Le brief vise la réacquisition d’une cible individuelle et une frappe autonome en terrain masqué.','Une démonstration de guidage dans le scénario décrit par le brief.','Sujet axé sur la décision d’un drone individuel.'],
+  ['04','autonomy','Fleet Orchestration','Alta Ares','5 équipes','Le brief porte sur l’affectation d’une flotte à des missions de reconnaissance et de frappe sous contraintes.','Un plan de mission valide. La phase après perte de liaison est facultative.','Sujet axé sur la coordination de la flotte. Un plan invalide vaut zéro dans l’évaluation.'],
+  ['05','hardware','Jet-Drone Interceptor','Frontier Defence Labs','0 équipe','Adapter un jet de loisir en intercepteur aérien.','Un prototype fonctionnel, selon le brief.','Expérience préalable des réacteurs, moyens d’essai et électronique de vol à apporter.'],
+  ['06','ml','Small Aircraft Detection and Tracking','Piotr Gryko','2 équipes','Détecter les petits aéronefs et conserver leurs identifiants au fil des images.','Détections COCO JSON, suivis MOT et scores de détection et de suivi.','Partir de RF-DETR. Vérifier la place de la validation sur Axelera dans l’évaluation.'],
+  ['07','ml','RGB + Thermal Detection and Tracking','Piotr Gryko','0 équipe','Détecter et suivre des véhicules et des personnes dans des scènes RGB ou thermiques.','Détections COCO JSON, suivis MOT et scores séparés pour chaque modalité.','Les scènes RGB et thermiques sont distinctes. Le déploiement INT8 sur Axelera reste à valider.'],
+  ['08','ml','Edge Video Triage','Piotr Gryko','0 équipe','Classer les images par priorité pour sélectionner celles à envoyer avec un budget de 1 % ou 5 %.','JSONL avec ID, décision et priorité. Le jury mesure le classement et la capture sous budget.','Sur validation, les budgets représentent une image et sept images. Un changement en tête pèse lourd.'],
+  ['09','ml','Acoustic-to-Visual Drone Detection','Piotr Gryko','1 équipe','Classer des fenêtres audio de cinq secondes et décider quand déclencher une vérification vidéo.','JSONL avec ID, décision de déclenchement et classe sonore. La confirmation visuelle est facultative.','Seulement huit clips de validation. L’inactivité vidéo sert d’indicateur indirect d’utilisation des ressources.']
+];
+
+const storageKey = 'hackathon-subjects-shortlist-v1';
+let selected = new Set();
+try {
+  const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+  if (Array.isArray(saved)) selected = new Set(saved);
+} catch {}
+
+const grid = document.querySelector('#subjects');
+const category = document.querySelector('#category');
+const favorites = document.querySelector('#favorites');
+const count = document.querySelector('#count');
+
+for (const [id, domain, title, source, teams, goal, result, constraint] of subjects) {
+  const card = document.createElement('article');
+  card.id = 's' + id;
+  card.dataset.domain = domain;
+  card.innerHTML = `
+    <div class="meta"><span class="id">${id} · ${source}</span><span>${teams}</span></div>
+    <h3>${title}</h3>
+    <p>${goal}</p>
+    <dl><dt>Résultat attendu</dt><dd>${result}</dd>
+    <dt>Point de décision</dt><dd>${constraint}</dd></dl>
+    <label class="mark"><input type="checkbox" aria-label="Ajouter ou retirer le sujet ${id} de ma shortlist">Ma shortlist</label>`;
+  const checkbox = card.querySelector('input');
+  checkbox.checked = selected.has(id);
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) selected.add(id);
+    else selected.delete(id);
+    try { localStorage.setItem(storageKey, JSON.stringify([...selected])); } catch {}
+    update();
+  });
+  grid.append(card);
+}
+
+function update() {
+  let visible = 0;
+  for (const card of grid.children) {
+    const matchesDomain = !category.value || card.dataset.domain === category.value;
+    const matchesFavorites = !favorites.checked || selected.has(card.id.slice(1));
+    card.hidden = !(matchesDomain && matchesFavorites);
+    if (!card.hidden) visible++;
+  }
+  count.textContent = `${visible} sujet${visible > 1 ? 's' : ''} sur ${subjects.length} · ${selected.size} dans ta shortlist`;
+}
+
+category.addEventListener('change', update);
+favorites.addEventListener('change', update);
+for (const link of document.querySelectorAll('.picks a')) {
+  link.addEventListener('click', () => {
+    category.value = '';
+    favorites.checked = false;
+    update();
+  });
+}
+update();
+</script>
+</body>
+</html>
