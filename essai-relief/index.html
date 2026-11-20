@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Verdun · Essai de relief | Arcy</title>
+  <link rel="stylesheet" href="relief.css">
+  <script src="relief.js" type="module"></script>
+</head>
+<body>
+  <main>
+    <header><img src="../assets/ArcyWhitelogo.svg" alt="Arcy"><span>/</span> Sound radar</header>
+    <section aria-labelledby="zone">
+      <div class="toolbar">
+        <h1 id="zone">Verdun <small>Vallée de la Meuse</small></h1>
+        <div class="map-controls">
+          <div class="switch" role="group" aria-label="Fond de carte">
+            <button data-layer="plan" aria-pressed="false" disabled>Plan</button><button data-layer="aerial" aria-pressed="true" disabled>Satellite</button>
+          </div>
+          <div class="switch" role="group" aria-label="Vue du terrain">
+            <button data-mode="2" aria-pressed="true" disabled>2D</button><button data-mode="3" aria-pressed="false" disabled>3D</button>
+          </div>
+        </div>
+      </div>
+      <figure>
+        <div class="stage">
+          <canvas tabindex="0" aria-label="Carte du relief de Verdun" aria-describedby="view" role="region"></canvas>
+          <button class="north" type="button" title="Rétablir le cadrage initial" aria-label="Rétablir le cadrage initial"><span aria-hidden="true">↑</span> N</button>
+          <div class="zoom" role="group" aria-label="Zoom">
+            <button type="button" id="out" aria-label="Dézoomer">−</button>
+            <output id="factor" aria-label="Grossissement">1×</output>
+            <button type="button" id="in" aria-label="Zoomer">+</button>
+          </div>
+          <div class="pin" data-u=".68" data-v=".42">A1</div>
+          <div class="pin" data-u=".39" data-v=".68">A2</div>
+          <div class="pin" data-u=".20" data-v=".37">A3</div>
+        </div>
+        <figcaption><span id="view" role="status">Chargement du terrain…</span><span>Repères fictifs</span></figcaption>
+      </figure>
+    </section>
+    <footer>Plan et photo aérienne © IGN · Géoplateforme <span> / </span> Relief <a href="https://registry.opendata.aws/terrain-tiles/">Mapzen Terrain Tiles</a> · <a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md">Sources altimétriques</a></footer>
+  </main>
+</body>
+</html>

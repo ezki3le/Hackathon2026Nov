@@ -14,8 +14,10 @@ Selon l’installation, utiliser `python3` ou `py -3` à la place de `python`. O
 
 ## Parcours de présentation
 
+La carte de Verdun s’ouvre en **Plan · 2D**. Cliquer sur un repère A1, A2 ou A3 pour afficher les mesures simulées du récepteur. Passer en **Satellite** puis en **3D** pour voir le relief en gardant la sélection. Glisser sur la carte pour la tourner à la main, puis cliquer sur la boussole pour retrouver le cadrage initial. Les fonds et le relief sont inclus dans `essai-relief/` et fonctionnent hors ligne avec le serveur local.
+
 1. Cliquer sur le spectrogramme pour lancer un extrait de cinq secondes. Un second clic met en pause. Le trait blanc suit la lecture et l’ambre indique les bandes les plus intenses.
-2. À la fin, le voyant indique la classe prédite. Le calque violet montre les contributions positives au score de cette classe sur le spectrogramme présenté au modèle.
+2. À la fin, l’icône et le titre de la carte du journal indiquent la classe prédite. Le calque violet montre les contributions positives au score de cette classe sur le spectrogramme présenté au modèle.
 3. Ouvrir la carte de l’événement dans le journal pour comparer la prédiction, l’annotation et la décision de vérification vidéo. Les badges A1, A2 et A3 rejouent le même enregistrement avec trois niveaux simulés.
 4. Choisir **Extrait suivant** pour poursuivre. Le troisième extrait, `c5_0025`, montre une erreur de classification que l’équipe peut expliquer au public.
 
@@ -23,6 +25,6 @@ Selon l’installation, utiliser `python3` ou `py -3` à la place de `python`. O
 
 - `index.html` et `style.css` définissent l’interface.
 - `spectrum.js` pilote la lecture, le spectrogramme calculé dans le navigateur et le calque de contribution.
-- `app.js` relie les extraits, les voyants, la carte et le journal.
+- `app.js` relie les extraits, la sélection des récepteurs et le journal. La démo principale et l’essai autonome utilisent le même moteur de carte dans `essai-relief/`.
 - `clip-results.js` contient les sorties précalculées de MobileNetV3-Small sur les quatre clips de validation, le seuil vidéo et l’empreinte de l’export ONNX utilisé. Le navigateur lit ces sorties à la fin de chaque extrait.
 - `assets/` contient les WAV, les PNG log-mel d’entrée du modèle, les calques `*-cam.png`, le logo et la cartographie. Les stations et leurs jauges sont simulées. Les clips proviennent du kit du challenge.
