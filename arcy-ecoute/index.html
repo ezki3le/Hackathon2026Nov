@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Arcy · Station d’écoute</title><link rel="stylesheet" href="style.css"><script defer src="app.js"></script></head>
+<body><header><div class="brand"><img src="assets/arcy.svg" alt="">ARCY</div><span class="product">Laboratoire acoustique</span><span class="mode">● &nbsp; Simulation locale</span></header>
+<main><div class="intro"><div><p class="eyebrow">CHALLENGE 09 / AUDIO</p><h1>Station d’écoute</h1></div><p class="score">Score <strong id="score">0 / 0</strong></p></div>
+<div class="layout"><aside><h2>Journal d’écoute</h2><p class="sub">Événements de la session</p><ol id="log" aria-live="polite"></ol></aside>
+<div class="right"><section class="mapbox"><div class="maphead"><div><p class="eyebrow">ZONE DE DÉMONSTRATION</p><h2>Paris · La Seine</h2></div><button id="layer">Vue plan</button></div><div class="map" id="map" aria-label="Carte de démonstration de Paris"><div class="mapimg"></div><div class="pins" id="pins"></div><span class="credit" id="credit">Orthophotographie © IGN · Géoplateforme</span></div></section>
+<section class="rxsection"><div class="sectionhead"><h2>Récepteurs</h2><span class="sub">Signaux simulés</span></div><div id="receivers"></div></section>
+<div class="lower"><section class="listen"><div class="sectionhead"><h2>Écoute à l’aveugle</h2><span id="round" class="mono"></span></div><p class="sub" id="clip"></p><audio controls preload="auto" id="player" aria-label="Extrait du challenge"></audio><div class="choices" id="choices" aria-label="Classe sonore proposée"></div></section>
+<section class="verdict" aria-live="polite"><p class="eyebrow">VÉRIFICATION</p><h2 id="result">À toi d’écouter</h2><p id="detail">Écoute l’extrait puis choisis une classe sonore.</p><button hidden id="next">Extrait suivant</button></section></div></div></div></main></body></html>
