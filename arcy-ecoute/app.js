@@ -6,9 +6,9 @@ const clips = [
   {id:'c5_0033',label:'Explosion'}
 ];
 const stations = [
-  {name:'A1',signal:4,wifi:4,x:65,y:40},
-  {name:'A2',signal:2,wifi:3,x:48,y:65},
-  {name:'A3',signal:1,wifi:2,x:29,y:38}
+  {name:'A1',signal:4,wifi:4,u:.68,v:.42,temperature:12.4,humidity:71,tilt:0.8},
+  {name:'A2',signal:2,wifi:3,u:.39,v:.68,temperature:13.1,humidity:68,tilt:1.6},
+  {name:'A3',signal:1,wifi:2,u:.20,v:.37,temperature:11.9,humidity:74,tilt:2.3}
 ];
 let station = 0, round = 0;
 
@@ -22,15 +22,6 @@ const classNames = {
 };
 const percent = new Intl.NumberFormat('fr-FR', {style: 'percent', maximumFractionDigits: 1});
 
-function showPrediction(soundClass) {
-  document.querySelectorAll('.lamp').forEach(lamp => {
-    const active = lamp.dataset.sound === soundClass;
-    lamp.classList.toggle('lit', active);
-    lamp.setAttribute('aria-label', classNames[lamp.dataset.sound] + (active ? ' · allumé' : ' · éteint'));
-    lamp.setAttribute('role', 'img');
-  });
-}
-
 function reportClip() {
   if (reportShown) return;
   const clip = clips[round];
@@ -40,7 +31,6 @@ function reportClip() {
     return;
   }
   reportShown = true;
-  showPrediction(report.soundClass);
   const name = classNames[report.soundClass];
   const wake = report.wakeScore >= clipResults.wakeThreshold;
   addResultCard(clip, report, name, wake);
@@ -55,17 +45,19 @@ function addResultCard(clip, report, name, wake) {
   item.id = eventId;
   item.className = 'result-card';
   const details = document.createElement('details');
+  const recordedAt = new Date();
   details.innerHTML = `
     <summary>
-      <span class="result-heading"><strong>${name}</strong><small>${clip.id} · ${new Date().toLocaleTimeString('fr-FR')}</small></span>
-      <span class="review-state">${wake ? 'Vidéo demandée' : 'Vidéo en veille'}</span>
+      <svg class="event-icon" data-sound="${report.soundClass}" aria-hidden="true" viewBox="0 0 24 24"><use href="#sound-${report.soundClass}"></use></svg>
+      <span class="result-heading"><strong>${name}</strong><small>${wake ? 'Vidéo demandée' : 'Vidéo en veille'}</small></span>
+      <time datetime="${recordedAt.toISOString()}">${recordedAt.toLocaleTimeString('fr-FR')}</time>
     </summary>
     <div class="result-body">
       <dl>
         <dt>Classe du CNN</dt><dd>${name}</dd>
         <dt>Annotation du clip</dt><dd>${clip.label}</dd>
         <dt>Score vidéo / seuil</dt><dd>${percent.format(report.wakeScore)} / ${percent.format(clipResults.wakeThreshold)}</dd>
-        <dt>Source</dt><dd>1 extrait mono · 5 s</dd>
+        <dt>Extrait mono · 5 s</dt><dd>${clip.id}</dd>
       </dl>
       <figure><img src="assets/${clip.id}.png" alt="Spectrogramme log-mel analysé par le CNN" width="100" height="100"></figure>
     </div>`;
@@ -111,7 +103,7 @@ function addResultCard(clip, report, name, wake) {
     };
     badges.append(button);
   }
-  badges.append(legend);
+  badges.prepend(legend);
   item.append(details, badges, panel);
   $('log').prepend(item);
 }
@@ -136,6 +128,11 @@ function updateStationStatus() {
 }
 function selectStation(index){
   station=index;
+  const sensor = stations[index];
+  $('station-name').textContent = sensor.name;
+  $('temperature').textContent = sensor.temperature.toLocaleString('fr-FR') + ' °C';
+  $('humidity').textContent = sensor.humidity + ' %';
+  $('tilt').textContent = sensor.tilt.toLocaleString('fr-FR') + '°';
   for(const container of [$('pins'),$('receivers')]){
     container.querySelectorAll('button').forEach((button,i)=>{
       button.classList.toggle('active',i===index);
@@ -150,7 +147,7 @@ for (const event of ['playing', 'pause', 'ended', 'emptied']) {
 stations.forEach((s,i)=>{
   const pin=document.createElement('button');
   pin.className='pin';pin.textContent=s.name;
-  pin.style.left=s.x+'%';pin.style.top=s.y+'%';
+  pin.dataset.u=s.u;pin.dataset.v=s.v;
   pin.title = 'Antenne ' + s.name;
   pin.setAttribute('aria-label','Sélectionner '+pin.title);
   const rx=document.createElement('button');rx.className='rx';
@@ -179,7 +176,6 @@ stations.forEach((s,i)=>{
   $('pins').append(pin);$('receivers').append(group);
 });
 function showClip(){
-  showPrediction(null);
   reportShown=false;
   previewPlayer?.pause();
   document.getElementById('spectrum').src='assets/'+clips[round].id+'.png';
@@ -192,20 +188,4 @@ $('next').onclick=()=>{
   round=(round+1)%clips.length;
   showClip();
 };
-$('layer').onclick=()=>{
-  const plan=$('map').classList.toggle('plan');
-  $('layer').textContent=plan?'Vue aérienne':'Vue plan';
-  $('credit').textContent=plan?'Plan IGN · Géoplateforme':'Orthophotographie © IGN · Géoplateforme';
-};
-let mapZoom = 1.5;
-function setZoom(value) {
-  mapZoom = Math.max(1, Math.min(2, value));
-  $('map').style.setProperty('--zoom', mapZoom);
-  $('zoom-level').value = mapZoom.toLocaleString('fr-FR') + '×';
-  $('zoom-out').disabled = mapZoom === 1;
-  $('zoom-in').disabled = mapZoom === 2;
-}
-$('zoom-in').onclick = () => setZoom(mapZoom + 0.25);
-$('zoom-out').onclick = () => setZoom(mapZoom - 0.25);
-setZoom(mapZoom);
 selectStation(0);showClip();log('Session ouverte · 3 récepteurs simulés.');

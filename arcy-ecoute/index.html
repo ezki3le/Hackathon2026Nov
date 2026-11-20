@@ -8,43 +8,44 @@
   <script defer src="clip-results.js"></script>
   <script defer src="app.js"></script>
   <script defer src="spectrum.js"></script>
+  <script type="module" src="essai-relief/relief.js"></script>
 </head>
 <body>
   <header>
     <h1 class="signature"><img class="wordmark" src="assets/ArcyWhitelogo.svg" alt="Arcy"><span class="divider" aria-hidden="true">/</span> Sound radar</h1>
-    <span class="mode">Exercice local</span>
   </header>
   <main class="desk">
     <section class="mapbox">
-      <div class="sectionhead"><h2>Verdun · Vallée de la Meuse</h2><button id="layer">Vue aérienne</button></div>
-      <div class="map plan" id="map" role="region" aria-label="Carte de démonstration près de Verdun">
-        <div class="map-viewport"><div class="mapimg"></div><div class="pins" id="pins"></div></div>
-        <div class="zoom-controls" role="group" aria-label="Zoom de la carte">
-          <button id="zoom-out" aria-label="Réduire le zoom">−</button>
-          <output id="zoom-level" aria-label="Niveau de zoom">1,5×</output>
-          <button id="zoom-in" aria-label="Augmenter le zoom">+</button>
+      <div class="map stage" id="map" role="region" aria-label="Carte de démonstration près de Verdun">
+        <canvas tabindex="0" aria-label="Relief de Verdun" aria-describedby="view"></canvas>
+        <div id="pins"></div>
+        <button class="north" aria-label="Rétablir le cadrage initial" title="Rétablir le cadrage initial"><span aria-hidden="true">↑</span> N</button>
+        <div class="map-controls">
+          <div role="group" aria-label="Fond de carte">
+            <button data-layer="plan" aria-pressed="true" disabled>Plan</button><button data-layer="aerial" aria-pressed="false" disabled>Satellite</button>
+          </div>
+          <div role="group" aria-label="Vue du terrain">
+            <button data-mode="2" aria-pressed="true" disabled>2D</button><button data-mode="3" aria-pressed="false" disabled>3D</button>
+          </div>
         </div>
-        <span class="credit" id="credit">Plan IGN · Géoplateforme</span>
+        <div class="zoom-controls" role="group" aria-label="Zoom de la carte">
+          <button id="out" aria-label="Dézoomer">−</button>
+          <output id="factor" aria-label="Grossissement">1×</output>
+          <button id="in" aria-label="Zoomer">+</button>
+        </div>
+        <h2 class="zone-name">Verdun · Vallée de la Meuse</h2>
+        <span id="view" role="status">Chargement du terrain…</span>
       </div>
       <div class="instruments">
         <div id="receivers" role="group" aria-label="Réception simulée des trois stations"></div>
-        <figure class="sound-lamps">
-          <figcaption>Classe prédite par le CNN</figcaption>
-          <div class="lamp-row">
-            <span class="lamp drone" data-sound="drone_buzz">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="m6 6 12 12M18 6 6 18"/></svg>Drone
-            </span>
-            <span class="lamp explosion" data-sound="explosion">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 20 4-7-4-4 6 1 1-7 4 6 6-4-2 7 4 1-6 7Z"/></svg>Explosion
-            </span>
-            <span class="lamp vehicle" data-sound="vehicle_mechanical">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 3-6h10l3 6v6H4Zm0 0h16M7 15h2m6 0h2M6 18v2m12-2v2"/></svg>Véhicule
-            </span>
-            <span class="lamp ambient" data-sound="ambient_outdoor">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11v2m4-6v10m5-14v18m5-14v10m4-6v2"/></svg>Ambiance
-            </span>
-          </div>
-        </figure>
+        <section class="telemetry" aria-labelledby="telemetry-heading">
+          <h2 id="telemetry-heading"><span id="station-name">A1</span> · Mesures simulées</h2>
+          <dl aria-live="polite">
+            <div><dt>Température</dt><dd id="temperature"></dd></div>
+            <div><dt>Humidité rel.</dt><dd id="humidity"></dd></div>
+            <div><dt>Inclinaison</dt><dd id="tilt"></dd></div>
+          </dl>
+        </section>
       </div>
     </section>
     <section class="listen">
@@ -64,7 +65,14 @@
       <summary>Pourquoi écouter avant de regarder ?</summary>
       <p>En Ukraine, Zvook présente deux usages de l’écoute passive : des stations en réseau et des capteurs portables. L’entreprise associe ces dispositifs à la surveillance aérienne et à l’alerte des populations. <a href="https://www.zvook.tech/en" target="_blank" rel="noopener noreferrer">Présentation de Zvook</a></p>
       <p>Arcy explore une question à l’échelle de cinq secondes de son. L’audio suffit-il à justifier une vérification vidéo ? Ouvrez une entrée CNN du journal pour comparer la classe proposée, la décision de vérification et l’annotation du clip. La carte de Verdun et ses trois stations illustrent l’exercice.</p>
+      <p>Fonds de carte et vue aérienne © IGN, Géoplateforme. Relief issu de Mapzen Terrain Tiles, amplifié trois fois en vue oblique. Les valeurs de température, d’humidité relative et d’inclinaison sont simulées pour chaque boîtier. <a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md">Sources altimétriques</a></p>
     </details>
   </main>
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute">
+    <symbol id="sound-drone_buzz" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="sound-explosion" viewBox="0 0 24 24"><path d="m3 20 4-7-4-4 6 1 1-7 4 6 6-4-2 7 4 1-6 7Z"/></symbol>
+    <symbol id="sound-vehicle_mechanical" viewBox="0 0 24 24"><path d="m4 12 3-6h10l3 6v6H4Zm0 0h16M7 15h2m6 0h2M6 18v2m12-2v2"/></symbol>
+    <symbol id="sound-ambient_outdoor" viewBox="0 0 24 24"><path d="M3 11v2m4-6v10m5-14v18m5-14v10m4-6v2"/></symbol>
+  </svg>
 </body>
 </html>
