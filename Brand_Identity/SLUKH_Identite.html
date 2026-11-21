@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SLUKH — Identité visuelle</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono&amp;display=swap">
+  <style>
+    :root{--navy:#0d1b2a;--paper:#eef0ea;--green:#7f9a6a;--amber:#f2a93b;--ink:#253645;--line:#bdc5ba}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--navy);font:400 1.0625rem/1.6 "IBM Plex Sans",system-ui,sans-serif}
+    h1,h2,h3{margin:0;font-family:Archivo,system-ui,sans-serif;line-height:1.06;letter-spacing:-.025em;text-wrap:balance}
+    h1{font-size:clamp(3rem,7.5vw,6rem);max-width:9ch}
+    h2{font-size:clamp(2.25rem,5vw,3.75rem)}
+    h3{font-size:1.3rem}
+    p{margin:0;max-width:62ch}
+    a{color:inherit;text-underline-offset:.24em}
+    a:hover{text-decoration-thickness:2px}
+    a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+    ::selection{background:var(--amber);color:var(--navy)}
+    .wrap{width:min(1160px,calc(100% - 3rem));margin-inline:auto}
+    header{color:var(--paper);background:var(--navy)}
+    nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:78px;border-bottom:1px solid #445362}
+    nav a{font-weight:600;text-decoration:none}
+    nav a:hover{text-decoration:underline}
+    nav div{display:flex;gap:clamp(.75rem,3vw,2.4rem);flex-wrap:wrap}
+    .hero{background:linear-gradient(90deg,var(--navy) 12%,transparent 94%),url("Source_Files/SLUKH_topography.svg") center/cover}
+    .hero .wrap{min-height:510px;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:clamp(1rem,5vw,5rem);padding-block:4rem}
+    .hero p{margin-top:1.5rem;color:#c4cfd7}
+    img{display:block;width:100%;height:auto}
+    .hero img{filter:brightness(0) invert(93%) sepia(10%) saturate(170%) hue-rotate(38deg)}
+    .section{padding-block:clamp(3rem,7vw,6.5rem);border-bottom:1px solid var(--line)}
+    .heading{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:1.5rem;margin-bottom:2rem}
+    .heading p,.download p,footer p{color:var(--ink)}
+    .logos{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+    figure{margin:0;background:var(--paper);min-width:0}
+    figure div{height:clamp(155px,19vw,238px);display:flex;align-items:center;justify-content:center;padding:1.3rem;background:#e2e7de}
+    figure img{width:auto;max-width:100%;max-height:100%;object-fit:contain}
+    figure:first-child img{max-width:min(325px,100%)}
+    figure:nth-child(3) img{max-width:124px}
+    figcaption{padding:.8rem 1.1rem;font-size:.95rem}
+    .palette{display:grid;grid-template-columns:repeat(4,1fr);margin:0}
+    .palette div{padding:1.18rem;display:flex;flex-direction:column;justify-content:end;min-height:145px}
+    .palette dd{margin:0;font:400 .9rem/1.6 "IBM Plex Mono",monospace}
+    .palette div:nth-child(1){background:var(--navy);color:var(--paper)}
+    .palette div:nth-child(2){border:1px solid var(--line)}
+    .palette div:nth-child(3){background:var(--green)}
+    .palette div:nth-child(4){background:var(--amber)}
+    .type{margin-top:1.5rem}
+    .download{display:grid;grid-template-columns:1fr 1.5fr auto;align-items:center;gap:1.25rem;padding:1.4rem 0;border-top:1px solid var(--line)}
+    .download:last-child{border-bottom:1px solid var(--line)}
+    .download a{font-weight:600}
+    footer .wrap{display:flex;gap:1rem;justify-content:space-between;flex-wrap:wrap;padding-block:2rem}
+    @media(max-width:700px){
+      .wrap{width:calc(100% - 2rem)}
+      nav{align-items:flex-start;padding-block:1rem}
+      nav div{justify-content:flex-end}
+      .hero .wrap,.heading{grid-template-columns:minmax(0,1fr)}
+      .hero .wrap{min-height:0;padding-block:3rem}
+      .hero img{max-width:340px}
+      .logos,.palette{grid-template-columns:repeat(2,minmax(0,1fr))}
+      figure:first-child{grid-column:1/-1}
+      figure div{height:165px}
+      .download{grid-template-columns:1fr auto}
+      .download p{grid-column:1/-1;grid-row:2}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="wrap" aria-label="Navigation principale">
+      <a href="#accueil">SLUKH</a>
+      <div><a href="#logo">Logo</a><a href="#palette">Palette</a><a href="#presentations">Présentations</a></div>
+    </nav>
+    <div class="hero" id="accueil">
+      <div class="wrap">
+        <div><h1>Identité visuelle</h1><p>SLUKH développe des technologies de détection acoustique. Sa chouette de face évoque l’écoute par les ondes qui dessinent ses joues.</p></div>
+        <img src="Logo/SVG/Recraft-A/slukh-horizontal-color.svg" width="624" height="245" alt="Logo SLUKH avec une tête de chouette et le nom en capitales">
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="section wrap" id="logo">
+      <div class="heading"><h2>Le logo</h2><p>La variante A associe la tête de chouette au lettrage SLUKH. Les trois compositions sont disponibles en SVG.</p></div>
+      <div class="logos">
+        <figure><div><img src="Logo/SVG/Recraft-A/slukh-horizontal-color.svg" alt="Chouette à gauche du nom SLUKH"></div><figcaption><a download href="Logo/SVG/Recraft-A/slukh-horizontal-color.svg">Composition horizontale · SVG</a></figcaption></figure>
+        <figure><div><img src="Logo/SVG/Recraft-A/slukh-stacked-color.svg" alt="Chouette au-dessus du nom SLUKH"></div><figcaption><a download href="Logo/SVG/Recraft-A/slukh-stacked-color.svg">Composition empilée · SVG</a></figcaption></figure>
+        <figure><div><img src="Logo/SVG/Recraft-A/slukh-icon-color.svg" alt="Tête de chouette seule"></div><figcaption><a download href="Logo/SVG/Recraft-A/slukh-icon-color.svg">Symbole seul · SVG</a></figcaption></figure>
+      </div>
+    </section>
+    <section class="section wrap" id="palette">
+      <div class="heading"><h2>Palette et typographie</h2><p>Le bleu nuit porte les couvertures. Le blanc cassé privilégie la lecture et le vert reprend les courbes de niveau. L’ambre sert d’accent ponctuel.</p></div>
+      <dl class="palette">
+        <div><dt>Bleu nuit</dt><dd>#0D1B2A</dd></div>
+        <div><dt>Blanc cassé</dt><dd>#EEF0EA</dd></div>
+        <div><dt>Vert terrain</dt><dd>#7F9A6A</dd></div>
+        <div><dt>Ambre signal</dt><dd>#F2A93B</dd></div>
+      </dl>
+      <p class="type"><strong>Archivo</strong> pour les titres, <strong>IBM Plex Sans</strong> pour le texte et <strong>IBM Plex Mono</strong> pour les données et les repères.</p>
+    </section>
+    <section class="section wrap" id="presentations">
+      <div class="heading"><h2>Présentations</h2><p>Trois modèles PowerPoint modifiables de quatre diapositives. Chaque couverture reprend le logo A et le fond topographique.</p></div>
+      <div class="download"><h3>Pitch</h3><p>Problème, proposition, décision attendue.</p><a download href="Presentation/Modeles-SLUKH/SLUKH-Pitch.pptx" aria-label="Télécharger le modèle Pitch en PowerPoint">PPTX ↓</a></div>
+      <div class="download"><h3>Démo</h3><p>Parcours, capture ou vidéo, observations et limites.</p><a download href="Presentation/Modeles-SLUKH/SLUKH-Demo.pptx" aria-label="Télécharger le modèle Démo en PowerPoint">PPTX ↓</a></div>
+      <div class="download"><h3>Revue de projet</h3><p>Avancement, résultats, décisions et suivi.</p><a download href="Presentation/Modeles-SLUKH/SLUKH-Revue.pptx" aria-label="Télécharger le modèle Revue de projet en PowerPoint">PPTX ↓</a></div>
+    </section>
+  </main>
+  <footer><div class="wrap"><p>SLUKH · Identité visuelle</p><a download href="Source_Files/SLUKH_topography.svg">Fond topographique · SVG</a></div></footer>
+</body>
+</html>
